@@ -1,0 +1,42 @@
+{
+  "name": "ai-loan-processor",
+  "private": false,
+  "version": "1.0.0",
+  "description": "AI-powered Indian Loan Document Processor - Categorize, Extract & Profile documents for loan processing",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "tesseract.js": "^5.0.4",
+    "lucide-react": "^0.383.0"
+  },
+  "devDependencies": {
+    "@types/react": "^18.2.43",
+    "@types/react-dom": "^18.2.17",
+    "@vitejs/plugin-react": "^4.2.1",
+    "autoprefixer": "^10.4.16",
+    "postcss": "^8.4.32",
+    "tailwindcss": "^3.4.0",
+    "vite": "^5.0.8"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yourusername/ai-loan-processor"
+  },
+  "keywords": [
+    "loan-processing",
+    "document-classification",
+    "OCR",
+    "aadhaar",
+    "pan-card",
+    "indian-documents",
+    "AI",
+    "fintech"
+  ]
+}
