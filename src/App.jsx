@@ -4,6 +4,7 @@ import UploadZone from './components/UploadZone';
 import ProcessingView from './components/ProcessingView';
 import DocumentResults from './components/DocumentResults';
 import LoanDashboard from './components/LoanDashboard';
+import BankMarketplace from './components/BankMarketplace';
 import Footer from './components/Footer';
 import { performOCR } from './engine/ocrService';
 import { classifyDocument } from './engine/documentClassifier';
@@ -15,6 +16,7 @@ const STEPS = {
   PROCESSING: 'processing',
   RESULTS: 'results',
   DASHBOARD: 'dashboard',
+  MARKETPLACE: 'marketplace',
 };
 
 export default function App() {
@@ -27,29 +29,27 @@ export default function App() {
   const [eligibility, setEligibility] = useState(null);
   const [report, setReport] = useState(null);
 
-  const processFiles = useCallback(async (uploadedFiles) => {
+  const processFiles = useCallback(async (uploadedFiles, appendMode = false) => {
     setFiles(uploadedFiles);
     setStep(STEPS.PROCESSING);
-    setProcessedDocs([]);
 
-    const results = [];
+    const existingDocs = appendMode ? [...processedDocs] : [];
+    const results = [...existingDocs];
+    setProcessedDocs(results);
 
     for (let i = 0; i < uploadedFiles.length; i++) {
       setCurrentFileIndex(i);
       const file = uploadedFiles[i];
 
       try {
-        // Step 1: OCR
         setOcrProgress({ status: 'Performing OCR...', progress: 0 });
         const ocrResult = await performOCR(file, (p) => {
           setOcrProgress({ status: p.status, progress: p.progress });
         });
 
-        // Step 2: Classify
         setOcrProgress({ status: 'Classifying document...', progress: 0.9 });
-        const classification = classifyDocument(ocrResult.text);
+        const classification = classifyDocument(ocrResult.text, file.name);
 
-        // Step 3: Extract entities
         setOcrProgress({ status: 'Extracting entities...', progress: 0.95 });
         const extraction = extractEntities(ocrResult.text, classification.bestMatch?.id);
 
@@ -77,7 +77,6 @@ export default function App() {
       }
     }
 
-    // Step 4: Build profile & assess
     const applicantProfile = buildApplicantProfile(results);
     const loanEligibility = assessLoanEligibility(applicantProfile);
     const loanReport = generateReport(applicantProfile, loanEligibility);
@@ -86,10 +85,17 @@ export default function App() {
     setEligibility(loanEligibility);
     setReport(loanReport);
     setStep(STEPS.RESULTS);
+  }, [processedDocs]);
+
+  const handleAddMore = useCallback(() => {
+    setStep(STEPS.UPLOAD);
   }, []);
 
+  const handleAddMoreFiles = useCallback((newFiles) => {
+    processFiles(newFiles, true);
+  }, [processFiles]);
+
   const handleReset = useCallback(() => {
-    // Revoke object URLs
     processedDocs.forEach(doc => {
       if (doc.preview) URL.revokeObjectURL(doc.preview);
     });
@@ -102,13 +108,18 @@ export default function App() {
     setCurrentFileIndex(0);
   }, [processedDocs]);
 
+  const hasExistingDocs = processedDocs.length > 0;
+
   return (
     <div className="min-h-screen flex flex-col">
       <Header step={step} onReset={handleReset} />
 
       <main className="flex-1 max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-8">
         {step === STEPS.UPLOAD && (
-          <UploadZone onFilesSelected={processFiles} />
+          <UploadZone
+            onFilesSelected={hasExistingDocs ? handleAddMoreFiles : processFiles}
+            existingCount={processedDocs.length}
+          />
         )}
 
         {step === STEPS.PROCESSING && (
@@ -121,13 +132,12 @@ export default function App() {
         )}
 
         {step === STEPS.RESULTS && (
-          <>
-            <DocumentResults
-              documents={processedDocs}
-              profile={profile}
-              onViewDashboard={() => setStep(STEPS.DASHBOARD)}
-            />
-          </>
+          <DocumentResults
+            documents={processedDocs}
+            profile={profile}
+            onViewDashboard={() => setStep(STEPS.DASHBOARD)}
+            onAddMore={handleAddMore}
+          />
         )}
 
         {step === STEPS.DASHBOARD && (
@@ -137,6 +147,16 @@ export default function App() {
             report={report}
             documents={processedDocs}
             onBack={() => setStep(STEPS.RESULTS)}
+            onAddMore={handleAddMore}
+            onViewMarketplace={() => setStep(STEPS.MARKETPLACE)}
+          />
+        )}
+
+        {step === STEPS.MARKETPLACE && (
+          <BankMarketplace
+            profile={profile}
+            eligibility={eligibility}
+            onBack={() => setStep(STEPS.DASHBOARD)}
           />
         )}
       </main>

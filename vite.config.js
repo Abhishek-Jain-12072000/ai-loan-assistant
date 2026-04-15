@@ -6,8 +6,11 @@ export default defineConfig({
   build: {
     outDir: 'dist',
     sourcemap: false,
+    commonjsOptions: {
+      include: [/tesseract\.js/, /node_modules/],
+    },
   },
   optimizeDeps: {
-    exclude: ['tesseract.js']
-  }
+    include: ['tesseract.js'],
+  },
 })

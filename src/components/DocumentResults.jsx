@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-export default function DocumentResults({ documents, profile, onViewDashboard }) {
+export default function DocumentResults({ documents, profile, onViewDashboard, onAddMore }) {
   const [expandedDoc, setExpandedDoc] = useState(0);
 
   const categoryColors = {
@@ -19,22 +19,33 @@ export default function DocumentResults({ documents, profile, onViewDashboard })
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between flex-wrap gap-3">
         <div>
           <h2 className="text-2xl font-bold text-slate-900">Document Analysis Results</h2>
           <p className="text-slate-500 mt-1">
             {documents.length} document{documents.length > 1 ? 's' : ''} processed successfully
           </p>
         </div>
-        <button
-          onClick={onViewDashboard}
-          className="py-2.5 px-5 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-semibold rounded-xl shadow-lg shadow-blue-500/25 transition-all active:scale-[0.98] flex items-center gap-2"
-        >
-          <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-            <path strokeLinecap="round" strokeLinejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-          </svg>
-          View Loan Dashboard
-        </button>
+        <div className="flex items-center gap-2">
+          <button
+            onClick={onAddMore}
+            className="py-2.5 px-5 bg-white border border-slate-300 hover:border-blue-500 hover:text-blue-600 text-slate-700 font-semibold rounded-xl transition-all active:scale-[0.98] flex items-center gap-2"
+          >
+            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
+            </svg>
+            Upload More Documents
+          </button>
+          <button
+            onClick={onViewDashboard}
+            className="py-2.5 px-5 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-semibold rounded-xl shadow-lg shadow-blue-500/25 transition-all active:scale-[0.98] flex items-center gap-2"
+          >
+            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+            </svg>
+            View Loan Dashboard
+          </button>
+        </div>
       </div>
 
       {/* Profile Summary Bar */}

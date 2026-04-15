@@ -6,6 +6,8 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "update-rates": "node scripts/updateRates.js",
+    "prebuild": "node scripts/updateRates.js",
     "build": "vite build",
     "preview": "vite preview"
   },

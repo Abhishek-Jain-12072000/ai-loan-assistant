@@ -4,7 +4,7 @@ const ACCEPTED_TYPES = ['image/jpeg', 'image/png', 'image/webp', 'image/bmp', 'i
 const MAX_FILES = 10;
 const MAX_SIZE = 10 * 1024 * 1024; // 10MB
 
-export default function UploadZone({ onFilesSelected }) {
+export default function UploadZone({ onFilesSelected, existingCount = 0 }) {
   const [isDragging, setIsDragging] = useState(false);
   const [selectedFiles, setSelectedFiles] = useState([]);
   const [error, setError] = useState('');
@@ -65,11 +65,12 @@ export default function UploadZone({ onFilesSelected }) {
       {/* Hero Section */}
       <div className="text-center mb-8">
         <h2 className="text-3xl font-bold text-slate-900 mb-3">
-          AI-Powered Loan Document Processing
+          {existingCount > 0 ? 'Add More Documents' : 'AI-Powered Loan Document Processing'}
         </h2>
         <p className="text-slate-600 max-w-2xl mx-auto">
-          Upload your Indian identity documents, financial records, and property papers.
-          Our AI will categorize, extract data, and build your loan profile automatically.
+          {existingCount > 0
+            ? `You already have ${existingCount} document${existingCount > 1 ? 's' : ''} processed. Upload additional documents to enhance your loan profile.`
+            : 'Upload your Indian identity documents, financial records, and property papers. Our AI will categorize, extract data, and build your loan profile automatically.'}
         </p>
       </div>
 
