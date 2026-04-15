@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-export default function LoanDashboard({ profile, eligibility, report, documents, onBack }) {
+export default function LoanDashboard({ profile, eligibility, report, documents, onBack, onAddMore, onViewMarketplace }) {
   const [activeTab, setActiveTab] = useState('overview');
 
   if (!profile || !eligibility || !report) return null;
@@ -15,15 +15,39 @@ export default function LoanDashboard({ profile, eligibility, report, documents,
   return (
     <div className="space-y-6">
       {/* Back button & title */}
-      <div className="flex items-center gap-4">
+      <div className="flex items-center gap-4 flex-wrap">
         <button onClick={onBack} className="p-2 rounded-xl hover:bg-slate-100 transition-colors">
           <svg className="w-5 h-5 text-slate-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
           </svg>
         </button>
-        <div>
+        <div className="flex-1 min-w-0">
           <h2 className="text-2xl font-bold text-slate-900">Loan Eligibility Dashboard</h2>
           <p className="text-slate-500 text-sm">AI-generated assessment for {report.applicantName}</p>
+        </div>
+        <div className="flex gap-3 flex-wrap">
+          {onViewMarketplace && (
+            <button
+              onClick={onViewMarketplace}
+              className="py-2.5 px-5 bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white font-semibold rounded-xl shadow-lg shadow-green-500/25 transition-all active:scale-[0.98] flex items-center gap-2"
+            >
+              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M8 14v3m4-3v3m4-3v3M3 21h18M3 10h18M3 7l9-4 9 4M4 10h16v11H4V10z" />
+              </svg>
+              Compare Banks
+            </button>
+          )}
+          {onAddMore && (
+            <button
+              onClick={onAddMore}
+              className="py-2.5 px-5 bg-white border border-slate-300 hover:border-blue-500 hover:text-blue-600 text-slate-700 font-semibold rounded-xl transition-all active:scale-[0.98] flex items-center gap-2"
+            >
+              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
+              </svg>
+              Upload More
+            </button>
+          )}
         </div>
       </div>
 
