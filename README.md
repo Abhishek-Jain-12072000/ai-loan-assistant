@@ -83,10 +83,10 @@ npm run build
 
 ```
 ┌──────────┐    ┌──────────────┐    ┌────────────────┐    ┌───────────────┐
-│  Upload   │───>│  OCR Engine  │───>│  Classifier    │───>│  Entity       │
-│  Images   │    │ (Tesseract)  │    │ (Pattern Match)│    │  Extractor    │
+│  Upload  │───>│  OCR Engine  │───>│  Classifier    │───>│  Entity       │
+│  Images  │    │ (Tesseract)  │    │ (Pattern Match)│    │  Extractor    │
 └──────────┘    └──────────────┘    └────────────────┘    └───────┬───────┘
-                                                                   │
+                                                                  │
                 ┌──────────────┐    ┌────────────────┐            │
                 │  Loan Report │<───│  Eligibility   │<───────────┘
                 │  Dashboard   │    │  Assessor      │
@@ -157,4 +157,5 @@ MIT License - see [LICENSE](LICENSE) for details.
 
 ---
 
-Built with Tesseract.js, React, and Tailwind CSS.
+Built by [Abhishek Jain](https://github.com/Abhishek-Jain-12072000) & [Ritee Jain](https://github.com/RiteeJain14)· Made for India 🇮🇳
+
